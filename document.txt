@@ -1,0 +1,58 @@
+plan what you want to do, about each page, the functionality, flow etc.
+we use a builder tool like VITE to automatically generate the folder structure,(inside fronend, VITE)(and would make separate folders for both frontend and backend)
+make 2 more folders inside src i.e. components and pages
+inside page, make separate file for all the pages that you have thought for(ex. login.jsx signup.jsx homepage.jsx)
+implement file based routing(and usage of Link)
+we use handle submit as a function, basically implementing the functionality thatt would implement on clicking submit
+use form to write all form logic inside and useState to handle whole logic
+we will use === instead of ==
+
+go to sever(backend file) and do "npm init -y" to genrate package.json in backend
+when we have to execute the whole program the short trick is npm run dev
+and when we have to just test one file,in backend  do "node index.js"
+now install express
+
+write all the code specifying the routes 
+then use query parameters(req.params.id      or any parameter name like name etc.) and req.body, req.method, req.url
+For a full list, see app.METHOD. You can also use app.all() to handle all HTTP methods and app.use() to specify middleware as the callback function
+
+make controller folder and routes folder, so from index.js we will go to routes folder and make files to handle different routes 
+and from these routes files we will go to controller files and write the logic there(the whole function for req,res)
+using express rotuer and controller!!
+
+make schema of tables in postgres
+Install the PostgreSQL Node driver: npm install pg
+write pool in the file called db.js(make this file)
+then install dotenv, and add all the database credentials in that.
+
+now write the code in controller, using pool, first: write register and login logic, second: test that in postman
+::dont forget to salt the password using bcrypt(install bcrypt)
+
+| Code                          | Meaning                                           | LoopOUT example                               |
+| ----------------------------- | ------------------------------------------------- | --------------------------------------------- |
+| **200 OK**                    | Request succeeded                                 | Login successful, fetch profile, search users |
+| **201 Created**               | Something new was created                         | Signup successfully creates a user            |
+| **400 Bad Request**           | Client sent invalid/malformed data                | Missing email, invalid input format           |
+| **401 Unauthorized**          | User is not authenticated / credentials invalid   | Wrong login credentials, missing/invalid JWT  |
+| **403 Forbidden**             | User is authenticated, but not allowed to do this | User tries to modify someone else's profile   |
+| **404 Not Found**             | Requested resource doesn't exist                  | `/users/999` when user 999 doesn't exist      |
+| **409 Conflict**              | Request conflicts with existing data              | Signup with an already-used email             |
+| **500 Internal Server Error** | Unexpected server-side failure                    | Database crashes, unexpected exception   
+
+
+then genrate jwt token(in the login functionality), then verify it in a middleware file's code,
+then use that middleware for every other route....
+test this jwt middleware with mock routes like profile  index.js -> routes -> middleware -> controller -> queries db
+
+now, integration
+install cors
+
+
+
+
+
+
+*********************************************
+MCP
+stackblitz
+codesandbox

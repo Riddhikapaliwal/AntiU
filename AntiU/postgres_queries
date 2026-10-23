@@ -1,0 +1,13 @@
+-- INSERT INTO user_skills (user_id, skill_id, self_rating, proof_of_work)
+-- VALUES
+-- (5, 6, 4, 'GitHub React project'),
+-- (6, 2, 5, 'Competitive programming'),
+-- (5, 7, 3, 'React portfolio');
+
+select * from user_skills;
+
+select u.name from users as u
+join user_skills as us
+on u.user_id= us.user_skills
+join skills as s
+on s.skill_id= us.skill_id;
