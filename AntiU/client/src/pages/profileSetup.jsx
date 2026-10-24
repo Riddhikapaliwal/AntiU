@@ -20,16 +20,23 @@ import PaymentForm from '../components/profileComponents/PaymentForm';
 import Review from '../components/profileComponents/Review';
 import AddressForm from '../components/profileComponents/AddressForm';
 import Info from '../components/profileComponents/Info';
-import InfoMobile from '../components/profileComponents/InfoMobile';
+// import InfoMobile from '../components/profileComponents/InfoMobile';
 import SitemarkIcon from '../components/profileComponents/SitemarkIcon';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeIconDropdown from '../shared-theme/ColorModeIconDropdown';
+import Link from '@mui/material/Link';
+
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
-function getStepContent(step) {
+ 
+
+function getStepContent(step, profileData, setProfileData) {
+  
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <AddressForm 
+        profileData={profileData}
+        setProfileData={setProfileData}/>;
     case 1:
       return <PaymentForm />;
     case 2:
@@ -40,12 +47,51 @@ function getStepContent(step) {
 }
 export default function ProfileSetup(props) {
   const [activeStep, setActiveStep] = React.useState(0);
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+   const [profileData, setProfileData] = React.useState({
+    name: '',
+    college: '',
+    course: '',
+    branch: '',
+    current_year: ''
+  });
+  const [serverError, setServerError]= React.useState('');
+
+  const handleNext = async(event) => {
+      // event.preventDefault();
+  
+      try{
+        const token= sessionStorage.getItem('token')
+        if(!token){
+          setServerError("Please login.");
+          return;
+        }
+
+      if(activeStep===0){
+        const response = await fetch('http://localhost:3000/profile/edit',{
+          method: 'PATCH',
+          headers: {
+            'content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(profileData)
+        });
+
+        if(!response.ok){
+          setServerError('Something is wrong');
+          return;
+        }
+      setActiveStep(activeStep + 1);
+      }
+      }catch(error){
+        console.error(error);
+      }
   };
+
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
@@ -90,7 +136,7 @@ export default function ProfileSetup(props) {
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+            <Info />
           </Box>
         </Grid>
         <Grid
@@ -150,15 +196,16 @@ export default function ProfileSetup(props) {
                 justifyContent: 'space-between',
               }}
             >
-              <div>
+              {/* <div>
                 <Typography variant="subtitle2" gutterBottom>
                   Selected products
                 </Typography>
                 <Typography variant="body1">
                   {activeStep >= 2 ? '$144.97' : '$134.98'}
                 </Typography>
-              </div>
-              <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+              </div> */}
+              {/* <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} /> */}
+              <strong>Please Complete the Profile.</strong>
             </CardContent>
           </Card>
           <Box
@@ -198,22 +245,20 @@ export default function ProfileSetup(props) {
             {activeStep === steps.length ? (
               <Stack spacing={2} useFlexGap>
                 <Typography variant="h1">📦</Typography>
-                <Typography variant="h5">Thank you for your order!</Typography>
+                <Typography variant="h5">Lets goooo!</Typography>
                 <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                  Your order number is
-                  <strong>&nbsp;#140396</strong>. We have emailed your order
-                  confirmation and will update you once its shipped.
+                  Your willingness and hunger to learn and teach others is what takes you ahead in this world.
                 </Typography>
                 <Button
                   variant="contained"
                   sx={{ alignSelf: 'start', width: { xs: '100%', sm: 'auto' } }}
                 >
-                  Go to my orders
+                  Go to Home page.
                 </Button>
               </Stack>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, profileData, setProfileData)}
                 <Box
                   sx={[
                     {
@@ -231,6 +276,12 @@ export default function ProfileSetup(props) {
                       : { justifyContent: 'flex-end' },
                   ]}
                 >
+                  {serverError && (
+                    <Typography color="error" role="alert">
+                      {serverError}
+                    </Typography>
+                  )};
+                  
                   {activeStep !== 0 && (
                     <Button
                       startIcon={<ChevronLeftRoundedIcon />}

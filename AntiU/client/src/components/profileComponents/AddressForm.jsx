@@ -4,123 +4,155 @@ import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
+import { useState } from 'react';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
 
-export default function AddressForm() {
+export default function AddressForm({profileData, setProfileData}) {
+
+  // const [name, setName]= useState("");
+  // const [age, setAge]= useState("");
+  // const [college, setCollege]= useState("");
+  // const [branch, setBranch]= useState("");
+  // const [heroline, setHeroline]= useState("");
+  // const [year, setYear]= useState("");
+  // const [course, setCourse]= useState("");
+
   return (
     <Grid container spacing={3}>
       <FormGrid size={{ xs: 12, md: 6 }}>
-        <FormLabel htmlFor="first-name" required>
+        <FormLabel htmlFor="name" required>
           Full name
         </FormLabel>
         <OutlinedInput
-          id="first-name"
-          name="first-name"
+          id="name"
+          name="name"
           type="text"
           placeholder="Riddhika P"
           autoComplete="given-name"
           required
           size="small"
+          value={profileData.name}
+          onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value}))}
         />
       </FormGrid>
       <FormGrid size={{ xs: 12, md: 6 }}>
-        <FormLabel htmlFor="last-name" required>
+        <FormLabel htmlFor="age" required>
           Age
         </FormLabel>
         <OutlinedInput
-          id="last-name"
-          name="last-name"
+          id="age"
+          name="age"
           type="text"
           placeholder="19"
-          autoComplete="family-name"
+          autoComplete="age"
           required
           size="small"
+          value={profileData.age}
+          onChange={(e) => setProfileData(prev => ({ ...prev, age: e.target.value}))}
+
         />
       </FormGrid>
       <FormGrid size={{ xs: 12 }}>
-        <FormLabel htmlFor="address1" required>
+        <FormLabel htmlFor="heroline" required>
           Hero line for you
         </FormLabel>
         <OutlinedInput
-          id="address1"
-          name="address1"
+          id="heroline"
+          name="heroline"
           type="text"
           placeholder="My ability to learn holistically is my biggest unfair advantage!"
-          autoComplete="shipping address-line1"
           required
           size="small"
+          value={profileData.heroline}
+          onChange={(e) => setProfileData(prev => ({ ...prev, heroline: e.target.value}))}
+
         />
       </FormGrid>
       <FormGrid size={{ xs: 12 }}>
-        <FormLabel htmlFor="address2" required>Current address</FormLabel>
+        <FormLabel htmlFor="address" required>Current address</FormLabel>
         <OutlinedInput
-          id="address2"
-          name="address2"
+          id="address"
+          name="address"
           type="text"
           placeholder="BH-2, JU hostel, sitapura, jaipur"
-          autoComplete="shipping address-line2"
+          autoComplete="address-line1"
           required
-          size="small"
+          size="small"          
+          value={profileData.address}
+          onChange={(e) => setProfileData(prev => ({ ...prev, address: e.target.value}))}
+
+
         />
       </FormGrid>
       <FormGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="city" required>
+        <FormLabel htmlFor="college" required>
           College/ University
         </FormLabel>
         <OutlinedInput
-          id="city"
-          name="city"
+          id="college"
+          name="college"
           type="text"
           placeholder="JECRC University"
-          autoComplete="address-level2"
+          autoComplete="college"
           required
           size="small"
+          value={profileData.college}
+          onChange={(e) => setProfileData(prev => ({ ...prev, college: e.target.value}))}
+
         />
       </FormGrid>
       <FormGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="state" required>
+        <FormLabel htmlFor="course" required>
           Course
         </FormLabel>
         <OutlinedInput
-          id="state"
-          name="state"
+          id="course"
+          name="course"
           type="text"
           placeholder="B.tech."
-          autoComplete="address-level1"
+          autoComplete="course"
           required
           size="small"
-        />
+          value={profileData.course}
+          onChange={(e) => setProfileData(prev => ({ ...prev, course: e.target.value}))}
+/>
       </FormGrid>
       <FormGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="zip" required>
+        <FormLabel htmlFor="branch" required>
           Branch
         </FormLabel>
         <OutlinedInput
-          id="zip"
-          name="zip"
+          id="branch"
+          name="branch"
           type="text"
           placeholder="CSE"
-          autoComplete="shipping postal-code"
+          autoComplete="branch"
           required
           size="small"
+          value={profileData.branch}
+          onChange={(e) => setProfileData(prev => ({ ...prev, branch: e.target.value}))}
+
         />
       </FormGrid>
       <FormGrid size={{ xs: 6 }}>
-        <FormLabel htmlFor="country" required>
-          Curent graduation yer
+        <FormLabel htmlFor="year" required>
+          Curent graduation year
         </FormLabel>
         <OutlinedInput
-          id="country"
-          name="country"
+          id="year"
+          name="year"
           type="text"
           placeholder="2"
-          autoComplete="shipping country-name"
+          autoComplete="studying_year"
           required
           size="small"
+          value={profileData.year}
+          onChange={(e) => setProfileData(prev => ({ ...prev, year: e.target.value}))}
+
         />
       </FormGrid>
       <FormGrid size={{ xs: 12 }}>

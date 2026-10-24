@@ -107,7 +107,7 @@ export default function SignInCard() {
             const newUser= await response.json();
             sessionStorage.setItem("token", newUser.token)
             // console.log(newUser);
-            navigate('/home');
+            navigate('/profileSetup');
         
         }catch(error){
             console.error('Submission error:', error)
