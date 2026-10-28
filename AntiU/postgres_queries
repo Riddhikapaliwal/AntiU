@@ -4,10 +4,32 @@
 -- (6, 2, 5, 'Competitive programming'),
 -- (5, 7, 3, 'React portfolio');
 
-select * from user_skills;
+-- select * from user_skills;
 
-select u.name from users as u
-join user_skills as us
-on u.user_id= us.user_skills
-join skills as s
-on s.skill_id= us.skill_id;
+-- select u.name from users as u
+-- join user_skills as us
+-- on u.user_id= us.user_skills
+-- join skills as s
+-- on s.skill_id= us.skill_id;
+
+-- alter table users
+-- add column age int;
+
+-- alter table users
+-- add constraint chk_age check(age<=50 and age>=15);
+
+-- alter table users
+-- add column heroline VARCHAR;
+
+-- alter table user_skills
+-- add column experience varchar
+
+-- create table if not exists experience(
+-- 	experience_id int generated always as identity primary key,
+-- 	user_id int references users(user_id) on delete cascade,
+-- 	organisation varchar(255) not null,
+-- 	designation varchar(255) not null,
+-- 	description text,
+-- 	start_date date,
+-- 	end_date date
+-- )

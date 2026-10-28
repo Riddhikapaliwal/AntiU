@@ -280,7 +280,7 @@ export default function ProfileSetup(props) {
                     <Typography color="error" role="alert">
                       {serverError}
                     </Typography>
-                  )};
+                  )}
                   
                   {activeStep !== 0 && (
                     <Button
@@ -318,6 +318,6 @@ export default function ProfileSetup(props) {
         </Grid>
       </Grid>
     </AppTheme>
-  );
+  )
 }
 
