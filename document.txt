@@ -80,3 +80,6 @@ All queries run on the same connection, so PostgreSQL knows both inserts belong 
 
 Remember: `pool.connect()` borrows the connection; `client.release()` returns it to the pool.
 ****************
+
+HTTP status codes: Use 400 for invalid input, 404 for missing records, 409 for duplicates, 200 for successful reads/updates/deletes, and 201 for successful creation.
+

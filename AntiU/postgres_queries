@@ -33,3 +33,26 @@
 -- 	start_date date,
 -- 	end_date date
 -- )
+
+-- CREATE TABLE exchange_requests (
+--     request_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+--     sender_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+--     receiver_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+
+--     requested_skill_id INT NOT NULL
+--         REFERENCES user_skills(user_skill_id),
+
+--     offered_skill_id INT
+--         REFERENCES user_skills(user_skill_id),
+
+--     message TEXT,
+
+--     status VARCHAR(20) NOT NULL DEFAULT 'pending'
+--         CHECK (status IN ('pending', 'accepted', 'rejected')),
+
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+--     CHECK (sender_id <> receiver_id)
+-- );

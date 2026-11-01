@@ -1,3 +1,4 @@
+import { text } from "express";
 import pool from "../db.js";
 
    const viewExperienceFunctionality= async(req, res)=> {
@@ -90,3 +91,4 @@ import pool from "../db.js";
 // some changes and have to add view function too for skill and experinece.
 
 export {viewExperienceFunctionality, addExperienceFunctionality, editExperienceFuncionality, deleteExperienceFunctionality};
+

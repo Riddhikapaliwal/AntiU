@@ -54,4 +54,70 @@ const searchFunctionality= async(req, res)=> {
     }
 }
 
-export {searchFunctionality};
+const viewUserProfile = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+
+        const profile = await pool.query(
+            `SELECT user_id, name, college, course, branch,
+                    current_year, age, heroline
+             FROM users
+             WHERE user_id = $1`,
+            [user_id]
+        );
+
+        // Check whether the student exists
+        if (profile.rowCount === 0) {
+            return res.status(404).json({
+                message: "User does not exist."
+            });
+        }
+
+        // 2. Fetch student's skills
+        const skills = await pool.query(
+            `SELECT s.skill_id, s.skill_name,
+                    us.user_skill_id, us.self_rating,
+                    us.proof_of_work
+             FROM user_skills AS us
+             JOIN skills AS s
+             ON us.skill_id = s.skill_id
+             WHERE us.user_id = $1`,
+            [user_id]
+        );
+
+        // 3. Fetch student's experiences
+        const experiences = await pool.query(
+            `SELECT experience_id, organisation, designation,
+                    description, start_date, end_date
+             FROM experience
+             WHERE user_id = $1
+             ORDER BY start_date DESC`,
+            [user_id]
+        );
+
+        // 4. Fetch student's posts
+        const posts = await pool.query(
+            `SELECT post_id, post_content, media_link,
+                    created_at, updated_at
+             FROM posts
+             WHERE user_id = $1
+             ORDER BY created_at DESC`,
+            [user_id]
+        );
+
+        return res.status(200).json({
+            profile: profile.rows[0],
+            skills: skills.rows,
+            experiences: experiences.rows,
+            posts: posts.rows
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Unknown server error"
+        });
+    }
+};
+
+export {searchFunctionality, viewUserProfile};
