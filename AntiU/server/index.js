@@ -32,6 +32,7 @@ import skillRoutes from "./routes/skillRoutes.js";
 import experienceRoutes from "./routes/experienceRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
 import requestRoutes from "./routes/requestRoutes.js";
+import exchangeRoutes from "./routes/requestRoutes.js";
 import cors from "cors";
 // import authenticateToken from "./middleware/authmiddleware.js";
 // import profile_functionality from "./controllers/profileController.js";
@@ -50,6 +51,7 @@ app.use('/skill',skillRoutes);
 app.use('/experience',experienceRoutes);
 app.use('/home', homeRoutes);
 app.use('/request', requestRoutes)
+app.use('/exchange', exchangeRoutes);
 
 app.listen(3000, ()=>{
     console.log("Server is working on http://localhost:3000/")

@@ -52,7 +52,7 @@
 --         CHECK (status IN ('pending', 'accepted', 'rejected')),
 
 --     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                                                                                                                                    
 --     CHECK (sender_id <> receiver_id)
 -- );
