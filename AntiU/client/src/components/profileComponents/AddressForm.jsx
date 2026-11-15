@@ -1,25 +1,78 @@
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import Grid from '@mui/material/Grid';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  FormControl,
+  Chip,
+  Checkbox,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  OutlinedInput,
+} from '@mui/material';
 import { useState } from 'react';
+import ExperienceSection from './experienceSection.jsx';
+
+
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
 
+const availableSkills = [
+  'React.js',
+  'JavaScript',
+  'Python',
+  'Java',
+  'C++',
+  'Node.js',
+  'UI/UX Design',
+  'Figma',
+  'SQL'
+];
+
 export default function AddressForm({profileData, setProfileData}) {
 
-  // const [name, setName]= useState("");
-  // const [age, setAge]= useState("");
-  // const [college, setCollege]= useState("");
-  // const [branch, setBranch]= useState("");
-  // const [heroline, setHeroline]= useState("");
-  // const [year, setYear]= useState("");
-  // const [course, setCourse]= useState("");
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [rating, setRating] = useState('');
+  const [skills, setSkills] = useState([]);
+  const [experiences, setExperiences] = useState([]);
+
+  const handleAddSkill = () => {
+
+    if (!selectedSkill || !rating) {
+      return;
+    }
+
+    // Prevent adding the same skill twice
+    const alreadyAdded = skills.some(
+      skill => skill.skill_name === selectedSkill
+    );
+
+    if (alreadyAdded) {
+      alert('You have already added this skill');
+      return;
+    }
+     const newSkill = {
+      skill_name: selectedSkill,
+      self_rating: Number(rating)
+    };
+
+    setSkills(prev => [...prev, newSkill]);
+
+    // Reset dropdowns
+    setSelectedSkill(null);
+    setRating('');
+  };
+
+    const handleDeleteSkill = (skillName) => {
+    setSkills(prev =>
+      prev.filter(skill => skill.skill_name !== skillName)
+    );
+  };
 
   return (
     <Grid container spacing={3}>
@@ -155,12 +208,106 @@ export default function AddressForm({profileData, setProfileData}) {
 
         />
       </FormGrid>
-      <FormGrid size={{ xs: 12 }}>
-        <FormControlLabel
-          control={<Checkbox name="saveAddress" value="yes" />}
-          label="Use the college name and address for networking"
-        />
-      </FormGrid>
+    
+
+
+<FormGrid size={{ xs: 12 }}>
+  <FormLabel>Add your skills</FormLabel>
+
+  <FormControl fullWidth size="small">
+    <Select
+      displayEmpty
+      value={selectedSkill || ''}
+      onChange={(e) => setSelectedSkill(e.target.value)}
+      renderValue={(value) =>
+        value || <span style={{ opacity: 0.6 }}>Choose a skill</span>
+      }
+    >
+      {availableSkills.map((skill) => (
+        <MenuItem key={skill} value={skill}>
+          {skill}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+</FormGrid>
+
+<FormGrid size={{ xs: 12 }}>
+  <FormLabel>Proficiency Rating</FormLabel>
+
+  <FormControl fullWidth size="small">
+    <Select
+      displayEmpty
+      value={rating}
+      onChange={(e) => setRating(e.target.value)}
+      renderValue={(value) =>
+        value
+          ? `${value} - ${['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'][value - 1]}`
+          : <span style={{ opacity: 0.6 }}>Choose your rating</span>
+      }
+      MenuProps={{
+        PaperProps: {
+          sx: {
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+          },
+        },
+      }}
+    >
+      <MenuItem value={1}>1 - Beginner</MenuItem>
+      <MenuItem value={2}>2 - Basic</MenuItem>
+      <MenuItem value={3}>3 - Intermediate</MenuItem>
+      <MenuItem value={4}>4 - Advanced</MenuItem>
+      <MenuItem value={5}>5 - Expert</MenuItem>
+    </Select>
+  </FormControl>
+</FormGrid>
+
+<FormGrid size={{ xs: 12 }}>
+  <Button
+    variant="contained"
+    size="large"
+    fullWidth
+    onClick={handleAddSkill}
+    disabled={!selectedSkill || !rating}
+    sx={{
+      '&.Mui-disabled': (theme) => ({
+        backgroundColor:
+          theme.palette.mode === 'dark' ? '#343943' : '#e5e7eb',
+        color:
+          theme.palette.mode === 'dark' ? '#c5cad3' : '#555555',
+      }),
+    }}
+  >
+    + Add Skill
+  </Button>
+</FormGrid>
+
+<FormGrid size={{ xs: 12 }}>
+  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+    {skills.map((skill) => (
+      <Chip
+        key={skill.skill_name}
+        label={`${skill.skill_name} - ${skill.self_rating}/5`}
+        onDelete={() => handleDeleteSkill(skill.skill_name)}
+        variant="outlined"
+      />
+    ))}
+  </Box>
+</FormGrid>
+
+<ExperienceSection
+  experiences={experiences}
+  setExperiences={setExperiences}
+/>
+
+     <FormGrid size={{ xs: 12 }}>
+  <FormControlLabel
+    control={<Checkbox name="saveAddress" value="yes" />}
+    label="Use the college name and address for networking"
+    sx={{ color: 'text.primary' }}
+  />
+</FormGrid>
     </Grid>
   );
 }

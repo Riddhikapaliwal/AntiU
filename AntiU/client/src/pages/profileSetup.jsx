@@ -27,7 +27,7 @@ import ColorModeIconDropdown from '../shared-theme/ColorModeIconDropdown';
 import Link from '@mui/material/Link';
 
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Personal details', 'Skills', 'Review your order'];
  
 
 function getStepContent(step, profileData, setProfileData) {
@@ -52,7 +52,9 @@ export default function ProfileSetup(props) {
     college: '',
     course: '',
     branch: '',
-    current_year: ''
+    current_year: '',
+    heroline: '',
+    age: ''
   });
   const [serverError, setServerError]= React.useState('');
 
@@ -66,6 +68,14 @@ export default function ProfileSetup(props) {
           return;
         }
 
+      const payload= {
+        ...profileData,
+        current_year: profileData.current_year === ''
+        ?null
+        : Number(profileData.current_year),
+        age: profileData.age === ''? null: Number(profileData.age)
+      };
+
       if(activeStep===0){
         const response = await fetch('http://localhost:3000/profile/edit',{
           method: 'PATCH',
@@ -73,11 +83,14 @@ export default function ProfileSetup(props) {
             'content-Type': 'application/json',
             Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify(profileData)
+          body: JSON.stringify(payload)
         });
 
         if(!response.ok){
-          setServerError('Something is wrong');
+          const errorData= await response.json();
+          console.log("Backend error:", response.status, errorData);
+
+          setServerError(errorData.message || "Profile update failed")
           return;
         }
       setActiveStep(activeStep + 1);
@@ -215,7 +228,6 @@ export default function ProfileSetup(props) {
               flexGrow: 1,
               width: '100%',
               maxWidth: { sm: '100%', md: 600 },
-              maxHeight: '720px',
               gap: { xs: 5, md: 'none' },
             }}
           >
