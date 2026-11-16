@@ -9,15 +9,12 @@ const viewSkillFunctionality= async(req,res)=> {
             from user_skills as us
             join skills as s
             on us.skill_id= s.skill_id  
-            where user_id= $1 `,
+            where us.user_id= $1 `,
             [userId]
         )
 
-        if(result1.rows.length != 0){
-            return res.status(200).json(result1.rows[0]);
-        }else{
-            return res.status(404).send("No skills added")
-        }
+            return res.status(200).json(result1.rows);
+    
 
     }catch(error){
     console.log(error);
@@ -30,9 +27,9 @@ const addSkillFunctionality= async(req,res)=>{
 
     try{
         const userId= req.user.user_Id;
-        const {skill_name, skill_rating, proof_of_work}= req.body;
+        const {skill_name, self_rating, proof_of_work}= req.body;
 
-        if(!skill_name || skill_rating == null){
+        if(!skill_name || self_rating == null){
             return res.status(400).json({
                 message: "Skill name and rating are required"
             });
@@ -64,7 +61,7 @@ const addSkillFunctionality= async(req,res)=>{
             `INSERT INTO user_skills(user_id, skill_id, self_rating, proof_of_work)
             values ($1, $2, $3, $4)
            returning user_skill_id`,
-            [userId, skillId, skill_rating, proof_of_work || null]
+            [userId, skillId, self_rating, proof_of_work || null]
         )
 
         await client.query('COMMIT');
