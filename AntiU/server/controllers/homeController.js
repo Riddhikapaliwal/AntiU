@@ -2,7 +2,7 @@ import pool from "../db.js";
 
 const homeFeed= async(req,res) => {
     try{
-        const result= await pool.query(
+        const result1= await pool.query(
             `SELECT 
             p.post_id,
             p.user_id,
@@ -15,15 +15,53 @@ const homeFeed= async(req,res) => {
             from posts as p
             join users as u
             on p.user_id = u.user_id
+            where p.user_id!= $3
             order by p.created_at desc
             limit $1 offset $2`,
-            [20,0]
+            [8,0, req.user.user_Id]
         );
-        return res.status(200).json(result.rows);
+
+        const result2 = await pool.query(
+            `SELECT 
+                u.user_id,
+                u.name,
+                u.current_year,
+                u.branch,
+                u.heroline,
+                json_agg(
+                    json_build_object(
+                        'skill_name', s.skill_name,
+                        'skill_type', us.skill_type,
+                        'self_rating', us.self_rating,
+                        'proof_of_work', us.proof_of_work
+                    )
+                ) AS skills
+            FROM users AS u
+            JOIN user_skills AS us
+                ON u.user_id = us.user_id
+            JOIN skills AS s
+                ON us.skill_id = s.skill_id
+            WHERE u.user_id != $1
+            GROUP BY 
+                u.user_id,
+                u.name,
+                u.current_year,
+                u.branch,
+                u.heroline
+            order by random()
+            LIMIT 8`,
+            [req.user.user_Id]
+);
+
+        return res.status(200).json({
+            post: result1.rows,
+            skillCards: result2.rows
+        });
+
 
     }catch(error){
-        console.log(error);
-        return res.status(500).send("Unknown server error");
+        console.error("HOME FEED ERROR:", error.message);
+        console.error("ERROR CODE:", error.code);
     }
 }
 
