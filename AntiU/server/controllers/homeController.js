@@ -148,4 +148,5 @@ const deletePost= async(req,res)=> {// it deletes even if the postId used in the
     }
 }
 
+
 export {homeFeed, viewUserPost, addPost, editPost, deletePost};
